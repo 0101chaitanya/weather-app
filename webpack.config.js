@@ -1,12 +1,16 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const regeneratorRuntime = require('regenerator-runtime');
 module.exports = {
   mode: 'development',
   entry: {
     script: './src/script.js',
   },
+  stats: 'errors-only',
   plugins: [
+    new NodePolyfillPlugin(),
     new CleanWebpackPlugin({
       cleanAfterEveryBuildPatterns: ['dist'],
     }),
@@ -25,6 +29,10 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
+      },
       {
         test: /\.m?js$/,
         exclude: /node_modules/,
